@@ -37,7 +37,8 @@ namespace api.Mappers
                 Industry = stockModel.Industry,
                 LastDiv = stockModel.LastDiv,
                 MarketCap = stockModel.MarketCap,
-                Purchase = stockModel.Purchase
+                Purchase = stockModel.Purchase,
+                Comments = stockModel.Comments.Select(x => x.ToCommentDto()).ToList()
             };
         }
 
@@ -51,7 +52,8 @@ namespace api.Mappers
                 Industry = stockDto.Industry,
                 LastDiv = stockDto.LastDiv,
                 MarketCap = stockDto.MarketCap,
-                Purchase = stockDto.Purchase
+                Purchase = stockDto.Purchase,
+                //Comments = stockDto.Comments.ToList()
             };
         }
 
@@ -64,7 +66,8 @@ namespace api.Mappers
                 Industry = stockDto.Industry,
                 LastDiv = stockDto.LastDiv,
                 MarketCap = stockDto.MarketCap,
-                Purchase = stockDto.Purchase
+                Purchase = stockDto.Purchase,
+             //   Comments = stockDto.Comments.Select(x => x.co).ToList()
             };
 
         }

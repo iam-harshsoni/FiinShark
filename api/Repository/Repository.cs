@@ -13,22 +13,43 @@ namespace api.Repository
         {
             _db = db;
             dbSet = _db.Set<T>();
+
+          //  _db.Stocks.Include(u => u.Comments);
         }
         public async Task AddAsync(T entity)
         {
             await dbSet.AddAsync(entity);
         }
 
-        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter)
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includProp);
+                }
+            }
+
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+
             return await query.ToListAsync();
         }
 

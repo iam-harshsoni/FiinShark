@@ -21,10 +21,10 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var stocks = await _unitOfWork.Stock.GetAllAsync();
+            var stocks = await _unitOfWork.Stock.GetAllAsync(includeProperties: "Comments");
             var stockDto = stocks.Select(s => s.ToStockDto());
 
-            return Ok(stocks); // 200 Status Code.
+            return Ok(stockDto); // 200 Status Code.
         }
 
         [HttpGet("{id}")]
@@ -32,7 +32,7 @@ namespace api.Controllers
         {
             if (id == 0) return BadRequest();
 
-            var stock = await _unitOfWork.Stock.GetAsync(x => x.Id == id);
+            var stock = await _unitOfWork.Stock.GetAsync(x => x.Id == id, includeProperties: "Comments");
 
             if (stock == null) return NotFound();
 
@@ -68,7 +68,7 @@ namespace api.Controllers
         {
             if (id == 0 || id <= 0) return BadRequest();
 
-            var stockToDelete = await _unitOfWork.Stock.GetAsync(x => x.Id == id);
+            var stockToDelete = await _unitOfWork.Stock.GetAsync(x => x.Id == id, includeProperties: "Comments");
 
             if (stockToDelete == null) return NotFound();
 

@@ -1,4 +1,6 @@
-﻿namespace api.Dtos.Stock
+﻿using api.Dtos.Comment;
+
+namespace api.Dtos.Stock
 {
     public class CreateStockRequestDto
     {
@@ -8,5 +10,6 @@
         public decimal Purchase { get; set; }
         public decimal LastDiv { get; set; }
         public long MarketCap { get; set; }
+        public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
     }
 }
