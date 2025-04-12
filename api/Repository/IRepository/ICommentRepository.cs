@@ -5,6 +5,6 @@ namespace api.Repository.IRepository
 {
     public interface ICommentRepository : IRepository<Comment>
     {
-        Task<Comment?> Update(int id, UpdateCommentRequestDto commentDto);
+        Task<Comment?> UpdateAsync(int id, UpdateCommentRequestDto commentDto);
     }
 }

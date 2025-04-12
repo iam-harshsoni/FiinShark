@@ -18,25 +18,23 @@ namespace api.Mappers
             };
         }
 
-        public static Comment ToCommentFromCommentDto(this CreateCommentRequestDto commentDto)
+        public static Comment ToCommentFromCommentDto(this CreateCommentRequestDto commentDto, int stockId)
         {
             return new Comment
             {
                 Title = commentDto.Title,
                 Content = commentDto.Content,
-                CreateOn = commentDto.CreateOn,
-                StockId = commentDto.StockId
+                StockId = stockId
             };
         }
 
-        public static Comment ToStockFromUpdateDto(this UpdateCommentRequestDto commentDto)
+        public static Comment ToStockFromUpdateDto(this UpdateCommentRequestDto commentDto, int stockId)
         {
             return new Comment
             { 
                 Title = commentDto.Title,
                 Content = commentDto.Content,
-                CreateOn = commentDto.CreateOn,
-                StockId = commentDto.StockId
+                StockId = stockId
             };
         }
     }

@@ -15,15 +15,13 @@ namespace api.Repository
             _db = db;
         }
 
-        public async Task<Comment?> Update(int id, UpdateCommentRequestDto commentDto)
+        public async Task<Comment?> UpdateAsync(int id, UpdateCommentRequestDto commentDto)
         {
             var commentToUpdate = await _db.Comments.FirstOrDefaultAsync(x => x.Id == id);
             if (commentToUpdate != null)
             {
                 commentToUpdate.Title = commentDto.Title;
                 commentToUpdate.Content = commentDto.Content;
-                commentToUpdate.StockId = commentDto.StockId;
-                commentToUpdate.CreateOn = commentDto.CreateOn;
 
             }
 

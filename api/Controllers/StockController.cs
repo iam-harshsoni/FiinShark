@@ -1,5 +1,6 @@
 ﻿using api.Data;
 using api.Dtos.Stock;
+using api.Helpers;
 using api.Mappers;
 using api.Models;
 using api.Repository.IRepository;
@@ -19,17 +20,23 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var stocks = await _unitOfWork.Stock.GetAllAsync(includeProperties: "Comments");
+            if(!ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            var stocks = await _unitOfWork.Stock.GetAllAsync(query, includeProperties: "Comments");
             var stockDto = stocks.Select(s => s.ToStockDto());
 
             return Ok(stockDto); // 200 Status Code.
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (id == 0) return BadRequest();
 
             var stock = await _unitOfWork.Stock.GetAsync(x => x.Id == id, includeProperties: "Comments");
@@ -42,6 +49,9 @@ namespace api.Controllers
         [HttpPost("createStockDto")]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var stockModel = stockDto.ToStockFromCreateDto();
 
             await _unitOfWork.Stock.AddAsync(stockModel);
@@ -51,9 +61,12 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             Stock? stockToUpdate = await _unitOfWork.Stock.UpdateAsync(id, updateDto);
 
             if (stockToUpdate == null) return NotFound();
@@ -63,7 +76,7 @@ namespace api.Controllers
             return Ok(stockToUpdate.ToStockDto());  // 200 Status code
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (id == 0 || id <= 0) return BadRequest();
