@@ -55,6 +55,8 @@ namespace api.Repository
                 }
             }
 
+            // Searching based on Symbol or Company Name
+
             //  var stock = querys.AsQueryable();
 
             //if (!string.IsNullOrWhiteSpace(query.CompanyName)){
@@ -75,6 +77,8 @@ namespace api.Repository
                     (!string.IsNullOrWhiteSpace(query.Symbol) && x.Symbol == query.Symbol));
             }
 
+
+            // Sorting
             if (!string.IsNullOrEmpty(query.SortBy))
             {
                 if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
@@ -83,7 +87,12 @@ namespace api.Repository
                 }
             }
 
-            return await stock.ToListAsync();
+
+            //pagination functionlity using Skip().Take()
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+
+            return await stock.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
     }
 }

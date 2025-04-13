@@ -26,6 +26,6 @@ namespace api.Dtos.Stock
         [Required]
         [Range(1, 5000000000)]
         public long MarketCap { get; set; }
-        public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
+      //  public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
     }
 }
